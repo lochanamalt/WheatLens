@@ -1,0 +1,113 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <mat-form-field>
+        <mat-label>Select Year</mat-label>
+        <mat-select [(ngModel)]="selectedYear">
+          <mat-option *ngFor="let year of years" [value]="year" >{{ year }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col">
+
+      <mat-form-field>
+        <mat-label>Select Site</mat-label>
+        <mat-select [(ngModel)]="selectedSite">
+          <mat-option *ngFor="let site of sites" [value]="site">{{ site }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field>
+        <mat-label>Select Camera</mat-label>
+        <mat-select [(ngModel)]="selectedCamera">
+          <mat-option *ngFor="let camera of cameras" [value]="camera">{{ camera }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="fill">
+        <mat-label>Pick Date</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" [min]="minDate" [max]="maxDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <button mat-raised-button (click)="searchImages()">Search</button>
+    </div>
+  </div>
+
+
+  <br />
+
+  <div class="image-viewer">
+    <h5>Pi Camera</h5>
+    <div class="carousel-animation-wrapper">
+        <igx-carousel #carousel>
+          <igx-slide *ngFor="let slide of slides;">
+            <div class="slide-wrapper">
+              <igx-card elevated>
+                <igx-card-header>
+                  <h4 igxCardHeaderTitle>{{slide.heading}}</h4>
+                </igx-card-header>
+                <igx-card-media>
+                  <img [src]="slide.image">
+                </igx-card-media>
+
+<!--                <igx-card-actions>-->
+<!--                  <a igxButton="fab" href="{{slide.link}}" target="_blank" rel="noopener" style="text-decoration: none;" igxStart>visit page</a>-->
+<!--                </igx-card-actions>-->
+              </igx-card>
+            </div>
+          </igx-slide>
+          <ng-template igxCarouselIndicator></ng-template>
+        </igx-carousel>
+    </div>
+    <h5>Lepton Thermal Camera</h5>
+    <div class="carousel-animation-wrapper">
+      <igx-carousel #carousel>
+        <igx-slide *ngFor="let slide of slides;">
+          <div class="slide-wrapper">
+            <igx-card elevated>
+              <igx-card-header>
+                <h4 igxCardHeaderTitle>{{slide.heading}}</h4>
+              </igx-card-header>
+              <igx-card-media>
+                <img [src]="slide.image">
+              </igx-card-media>
+
+              <!--                <igx-card-actions>-->
+              <!--                  <a igxButton="fab" href="{{slide.link}}" target="_blank" rel="noopener" style="text-decoration: none;" igxStart>visit page</a>-->
+              <!--                </igx-card-actions>-->
+            </igx-card>
+          </div>
+        </igx-slide>
+        <ng-template igxCarouselIndicator></ng-template>
+      </igx-carousel>
+    </div>
+    <h5>MLX Thermal Camera</h5>
+    <div class="carousel-animation-wrapper">
+      <igx-carousel #carousel>
+        <igx-slide *ngFor="let slide of slides;">
+          <div class="slide-wrapper">
+            <igx-card elevated>
+              <igx-card-header>
+                <h4 igxCardHeaderTitle>{{slide.heading}}</h4>
+              </igx-card-header>
+              <igx-card-media>
+                <img [src]="slide.image">
+              </igx-card-media>
+
+              <!--                <igx-card-actions>-->
+              <!--                  <a igxButton="fab" href="{{slide.link}}" target="_blank" rel="noopener" style="text-decoration: none;" igxStart>visit page</a>-->
+              <!--                </igx-card-actions>-->
+            </igx-card>
+          </div>
+        </igx-slide>
+        <ng-template igxCarouselIndicator></ng-template>
+      </igx-carousel>
+    </div>
+  </div>
+</div>
+

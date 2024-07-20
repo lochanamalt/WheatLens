@@ -1,0 +1,38 @@
+<mat-toolbar >
+  <button mat-icon-button aria-label="Menu icon" (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{ pageTitle}}</span>
+  <span class="example-spacer"></span>
+  <span>Wheat Lens</span>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <mat-icon color="primary">camera</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container autosize="true">
+  <mat-sidenav [ngClass]="!isCollapsed ? 'expanded' : ''" [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/view-images" routerLinkActive="active" (click)="changeTitle('View Images')">
+      <span class="entry">
+          <mat-icon color="primary">collections</mat-icon>
+          <span *ngIf="!isCollapsed">View Images</span>
+        </span>
+      </a>
+<!--      <a mat-list-item routerLink="/view-ndvi" routerLinkActive="inactive" (click)="changeTitle('NDVI')">-->
+<!--      <span class="entry">-->
+<!--          <mat-icon>collections</mat-icon>-->
+<!--          <span *ngIf="!isCollapsed">NDVI</span>-->
+<!--        </span>-->
+<!--      </a>-->
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="content-container">
+
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
