@@ -28,7 +28,7 @@
     <div class="col">
       <mat-form-field appearance="fill">
         <mat-label>Pick Date</mat-label>
-        <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" [min]="minDate" [max]="maxDate">
+        <input matInput  [matDatepicker]="picker" [(ngModel)]="selectedDate" [min]="minDate" [max]="maxDate" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
@@ -38,43 +38,50 @@
     </div>
   </div>
 
-
   <br />
 
-  <div class="image-viewer">
+  <div class="image-viewer" *ngIf="searched">
     <h5>Pi Camera</h5>
-    <div class="carousel-animation-wrapper">
+
+    <app-loader *ngIf="loading"></app-loader>
+    <app-no-data *ngIf="!loading && pi_camera_images.length <= 0"></app-no-data>
+    @if (!loading && pi_camera_images.length > 0) {
+      <div class="carousel-animation-wrapper">
         <igx-carousel #carousel>
-          <igx-slide *ngFor="let slide of slides;">
+          <igx-slide *ngFor="let slide of pi_camera_images;">
             <div class="slide-wrapper">
               <igx-card elevated>
                 <igx-card-header>
-                  <h4 igxCardHeaderTitle>{{slide.heading}}</h4>
+                  <h4 igxCardHeaderTitle>{{slide.timestamp}}</h4>
                 </igx-card-header>
                 <igx-card-media>
-                  <img [src]="slide.image">
+                  <img [src]="'data:image/jpeg;base64,' + slide.image_file">
                 </igx-card-media>
 
-<!--                <igx-card-actions>-->
-<!--                  <a igxButton="fab" href="{{slide.link}}" target="_blank" rel="noopener" style="text-decoration: none;" igxStart>visit page</a>-->
-<!--                </igx-card-actions>-->
+                <!--                <igx-card-actions>-->
+                <!--                  <a igxButton="fab" href="{{slide.link}}" target="_blank" rel="noopener" style="text-decoration: none;" igxStart>visit page</a>-->
+                <!--                </igx-card-actions>-->
               </igx-card>
             </div>
           </igx-slide>
           <ng-template igxCarouselIndicator></ng-template>
         </igx-carousel>
-    </div>
+      </div>
+    }
+
     <h5>Lepton Thermal Camera</h5>
-    <div class="carousel-animation-wrapper">
+    <app-loader *ngIf="loading"></app-loader>
+    <app-no-data *ngIf="!loading && lepton_camera_images.length <= 0"></app-no-data>
+    <div *ngIf="!loading && lepton_camera_images.length > 0" class="carousel-animation-wrapper-lepton">
       <igx-carousel #carousel>
-        <igx-slide *ngFor="let slide of slides;">
+        <igx-slide *ngFor="let slide of lepton_camera_images;">
           <div class="slide-wrapper">
             <igx-card elevated>
               <igx-card-header>
-                <h4 igxCardHeaderTitle>{{slide.heading}}</h4>
+                <h4 igxCardHeaderTitle>{{slide.timestamp}}</h4>
               </igx-card-header>
               <igx-card-media>
-                <img [src]="slide.image">
+                <img [src]="'data:image/jpeg;base64,' + slide.image_file">
               </igx-card-media>
 
               <!--                <igx-card-actions>-->
@@ -86,17 +93,19 @@
         <ng-template igxCarouselIndicator></ng-template>
       </igx-carousel>
     </div>
-    <h5>MLX Thermal Camera</h5>
-    <div class="carousel-animation-wrapper">
+    <h5>MLX Thermal Sensor</h5>
+    <app-loader *ngIf="loading"></app-loader>
+    <app-no-data *ngIf="!loading && mlx_sensor_images.length <= 0"></app-no-data>
+    <div *ngIf="!loading && mlx_sensor_images.length > 0" class="carousel-animation-wrapper">
       <igx-carousel #carousel>
-        <igx-slide *ngFor="let slide of slides;">
+        <igx-slide *ngFor="let slide of mlx_sensor_images;">
           <div class="slide-wrapper">
             <igx-card elevated>
               <igx-card-header>
-                <h4 igxCardHeaderTitle>{{slide.heading}}</h4>
+                <h4 igxCardHeaderTitle>{{slide.timestamp}}</h4>
               </igx-card-header>
               <igx-card-media>
-                <img [src]="slide.image">
+                <img [src]="'data:image/jpeg;base64,' + slide.image_file">
               </igx-card-media>
 
               <!--                <igx-card-actions>-->

@@ -34,7 +34,7 @@ export class SideNavComponent {
   sidenav!: MatSidenav;
   isCollapsed!: boolean;
   isMobile!: boolean;
-  pageTitle: string = "View Images";
+  pageTitle: string = "View Image";
 
   constructor(private observer: BreakpointObserver) {}
 
