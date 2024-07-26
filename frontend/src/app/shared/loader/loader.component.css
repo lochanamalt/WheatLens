@@ -1,0 +1,10 @@
+.loading {
+  display: flex;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-icon{
+  height: 150px;
+}

@@ -1,0 +1,10 @@
+.no-data {
+  display: flex;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-data-icon{
+  height: 200px;
+}

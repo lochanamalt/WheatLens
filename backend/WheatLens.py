@@ -2,14 +2,16 @@ import base64
 from datetime import datetime
 
 from azure.storage.fileshare import ShareServiceClient, FileProperties
-from flask import Flask, render_template, request, jsonify
-from configparser import ConfigParser
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
+from iniparse import ConfigParser
+
 
 def get_connection_string():
-  """Reads the Azure connection string from the config.properties file."""
-  config = ConfigParser()
-  config.read('config.properties')
-  return config.get('DEFAULT', 'azure.connectionstring')
+    """Reads the Azure connection string from the config.properties file."""
+    config = ConfigParser()
+    config.read('config.properties')
+    return config.get('DEFAULT', 'azure.connectionstring')
 
 
 # Azure file share information
@@ -18,6 +20,8 @@ share_name = "othello-data"
 main_folder = "upload"
 
 app = Flask(__name__)
+CORS(app)
+
 # Create a ShareServiceClient from the connection string
 service_client = ShareServiceClient.from_connection_string(conn_str=connection_string)
 
@@ -25,21 +29,25 @@ service_client = ShareServiceClient.from_connection_string(conn_str=connection_s
 share_client = service_client.get_share_client(share_name)
 
 
-@app.route("/")
-def index():
-    # Get list of camera numbers (1 to 8)
-    camera_numbers = range(1, 9)  # Creates a list from 1 to 8
+# @app.route("/")
+# def index():
+#     # Get list of camera numbers (1 to 8)
+#     camera_numbers = range(1, 9)  # Creates a list from 1 to 8
+#
+#     # Get today's date string
+#     today_str = datetime.today().strftime("%Y-%m-%d")
+#
+#     return render_template("index.html", camera_numbers=camera_numbers, today_str=today_str)
 
-    # Get today's date string
-    today_str = datetime.today().strftime("%Y-%m-%d")
 
-    return render_template("index.html", camera_numbers=camera_numbers, today_str=today_str)
-
-
-@app.route("/images", methods=["POST"])
+@app.route("/api/images", methods=["GET"])
+# @app.route("/images", methods=["POST"])
 def get_images():
-    camera_number = int(request.form["camera_number"])
-    selected_date = datetime.strptime(request.form["selected_date"], "%Y-%m-%d")
+    print("Getting images")
+    camera_number = int(request.args.get('camera'))
+    selected_date = datetime.strptime(request.args.get('date'), "%Y-%m-%d")
+    # camera_number = int(request.form["camera_number"])
+    # selected_date = datetime.strptime(request.form["selected_date"], "%Y-%m-%d")
 
     try:
 
@@ -73,17 +81,28 @@ def get_images():
         images_lepton = []
         images_mlx = []
 
+        date_string = selected_date.strftime('%Y-%b-%d')
+
         for image_name in image_names_pi_camera:
             file_client = share_client.get_file_client(directory_name_pi_camera + image_name)
-            images_pi_camera.append(base64.b64encode(file_client.download_file().readall()).decode("utf-8"))
+            time_string = image_name.split(prefix1 + "_")[1].split("_1.png")[0].replace(".", ":")
+            images_pi_camera.append({'timestamp': date_string + ' ' + time_string,
+                                     'image_file': base64.b64encode(file_client.download_file().readall()).decode(
+                                         "utf-8")})
 
         for image_name in image_names_lepton:
             file_client = share_client.get_file_client(directory_name_lepton + image_name)
-            images_lepton.append(base64.b64encode(file_client.download_file().readall()).decode("utf-8"))
+            time_string = image_name.split(prefix1 + "_")[1].split("_1.png")[0].replace(".", ":")
+            images_lepton.append({'timestamp': date_string + ' ' + time_string,
+                                  'image_file': base64.b64encode(file_client.download_file().readall()).decode(
+                                      "utf-8")})
 
         for image_name in image_names_mlx:
             file_client = share_client.get_file_client(directory_name_mlx + image_name)
-            images_mlx.append(base64.b64encode(file_client.download_file().readall()).decode("utf-8"))
+            time_string = image_name.split(prefix2 + "_")[1].split(".jpg")[0].replace("-", ":")
+            images_mlx.append({'timestamp': date_string + ' ' + time_string,
+                               'image_file': base64.b64encode(file_client.download_file().readall()).decode(
+                                   "utf-8")})
 
         # Download the image to a temporary location (optional)
         # This can be helpful for caching or manipulating the image before serving
@@ -100,7 +119,7 @@ def get_images():
         # # Return the image content as a response
         # return send_file(in_memory_file, mimetype="image/jpeg", as_attachment=False)
 
-        return jsonify(picamera_images=images_pi_camera, lepton_images=images_lepton, mlx_images=images_mlx)
+        return jsonify(pi_camera_images=images_pi_camera, lepton_images=images_lepton, mlx_images=images_mlx)
 
     except Exception as e:
         print(e)
