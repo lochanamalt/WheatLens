@@ -52,12 +52,12 @@ loadImagesBtn.addEventListener("click", function() {
       leptonImageContainer.innerHTML = "";
       mlxImageContainer.innerHTML = "";
 
-      if (imageData.picamera_images.length > 0) {
+      if (imageData.pi_camera_images.length > 0) {
           const title = document.createElement("h2")
           title.textContent = "Raspberry Pi Camera Images"
           piCameraImageContainer.append(title)
 
-          for (const encodedImageData of imageData.picamera_images) {
+          for (const encodedImageData of imageData.pi_camera_images) {
             const image = document.createElement("img");
               image.src = "data:image/jpeg;base64," + encodedImageData;
               image.alt = "Wheat Image";
