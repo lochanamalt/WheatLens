@@ -1,0 +1,80 @@
+.container{
+  padding: 10px;
+  margin: 10px;
+}
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.slide-wrapper {
+  max-height: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 10px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.action-wrapper {
+  height: 40px;
+  width: 70%;
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 1rem;
+  margin-left: 5.7rem;
+}
+
+.igx-slide img {
+  max-height: 750px !important;
+}
+
+@media (min-width: 1240px) {
+  .carousel-animation-wrapper {
+    height: 900px;
+  }
+}
+
+@media (min-width: 884px) and (max-width: 1240px) {
+  .carousel-animation-wrapper {
+    height: 700px;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 884px) {
+  .carousel-animation-wrapper {
+    height: 600px !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .carousel-animation-wrapper {
+    height: 400px !important;
+  }
+}
+
+.carousel-animation-wrapper {
+  margin: 16px auto;
+  display: flex;
+  flex-flow: column;
+}
+
+.carousel-animation-wrapper-lepton {
+  height: 400px;
+  margin: 16px auto;
+  display: flex;
+  flex-flow: column;
+}
+
+.igx-slide{
+  background-color:inherit;
+}
+
+.igx-card {
+  box-shadow: none;
+}
+
