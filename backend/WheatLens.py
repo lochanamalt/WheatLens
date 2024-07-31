@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 from azure.storage.fileshare import ShareServiceClient, FileProperties
-from flask import Flask, request, jsonify, render_template, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from iniparse import ConfigParser
 
