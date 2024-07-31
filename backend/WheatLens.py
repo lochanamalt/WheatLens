@@ -1,4 +1,5 @@
 import base64
+import os
 from datetime import datetime
 
 from azure.storage.fileshare import ShareServiceClient, FileProperties
@@ -11,7 +12,10 @@ def get_connection_string():
     """Reads the Azure connection string from the config.properties file."""
     config = ConfigParser()
     config.read('config.properties')
-    return config.get('DEFAULT', 'azure.connectionstring')
+    if config.get('DEFAULT', 'env') == 'prod':
+        return os.environ.get('CONNECTION_STRING')
+    else:
+        return config.get('DEFAULT', 'azure.connectionstring')
 
 
 # Azure file share information
@@ -33,16 +37,6 @@ share_client = service_client.get_share_client(share_name)
 @app.route('/')
 def index():
     return send_from_directory('static', 'index.html')
-
-# @app.route("/")
-# def index():
-#     # Get list of camera numbers (1 to 8)
-#     camera_numbers = range(1, 9)  # Creates a list from 1 to 8
-#
-#     # Get today's date string
-#     today_str = datetime.today().strftime("%Y-%m-%d")
-#
-#     return render_template("index.html", camera_numbers=camera_numbers, today_str=today_str)
 
 
 @app.route("/api/images", methods=["GET"])
