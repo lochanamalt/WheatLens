@@ -2,7 +2,7 @@ import base64
 from datetime import datetime
 
 from azure.storage.fileshare import ShareServiceClient, FileProperties
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 from iniparse import ConfigParser
 
@@ -19,7 +19,8 @@ connection_string = get_connection_string()
 share_name = "othello-data"
 main_folder = "upload"
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='')
+# app = Flask(__name__)
 CORS(app)
 
 # Create a ShareServiceClient from the connection string
@@ -28,6 +29,10 @@ service_client = ShareServiceClient.from_connection_string(conn_str=connection_s
 # Get a reference to the file share
 share_client = service_client.get_share_client(share_name)
 
+
+@app.route('/')
+def index():
+    return send_from_directory('static', 'index.html')
 
 # @app.route("/")
 # def index():
