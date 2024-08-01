@@ -45,6 +45,7 @@ def get_images():
     print("Getting images")
     camera_number = int(request.args.get('camera'))
     selected_date = datetime.strptime(request.args.get('date'), "%Y-%m-%d")
+    print("Client selected date: ", selected_date)
     # camera_number = int(request.form["camera_number"])
     # selected_date = datetime.strptime(request.form["selected_date"], "%Y-%m-%d")
 
@@ -61,6 +62,8 @@ def get_images():
 
         prefix1 = f"date_{selected_date.strftime('%#d-%#m-%Y')}"
         prefix2 = f"pic_{selected_date.strftime('%Y-%m-%d')}"
+        print("Search prefix1: ", prefix1)
+        print("Search prefix2: ", prefix2)
 
         image_names_pi_camera = [
             item.name for item in directory_client_pi_camera.list_directories_and_files()
@@ -74,6 +77,10 @@ def get_images():
             item.name for item in directory_client_mlx.list_directories_and_files()
             if item.name.startswith(prefix2) and isinstance(item, FileProperties)
         ]
+
+        print("Pi camera no.  of image names: ", len(image_names_pi_camera))
+        print("Lepton no. of image names: ", len(image_names_lepton))
+        print("MLX no. of image names: ", len(image_names_mlx))
 
         # Download streams for all images
         images_pi_camera = []
@@ -102,6 +109,11 @@ def get_images():
             images_mlx.append({'timestamp': date_string + ' ' + time_string,
                                'image_file': base64.b64encode(file_client.download_file().readall()).decode(
                                    "utf-8")})
+
+        print("Pi camera no. of images: ", len(images_pi_camera))
+        print("Lepton no. of images: ", len(images_lepton))
+        print("MLX no. of images: ", len(images_mlx))
+
 
         # Download the image to a temporary location (optional)
         # This can be helpful for caching or manipulating the image before serving
