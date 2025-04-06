@@ -8,7 +8,6 @@ from flask_cors import CORS
 from iniparse import ConfigParser
 
 
-env = 'dev'
 def get_connection_string():
     """Reads the Azure connection string from the config.properties file."""
     config = ConfigParser()
