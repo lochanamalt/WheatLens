@@ -21,7 +21,6 @@ def get_connection_string():
 # Azure file share information
 env, connection_string = get_connection_string()
 share_name = "othello-data"
-main_folder = "upload"
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 # app = Flask(__name__)
@@ -45,6 +44,7 @@ def get_images():
     print("Getting images")
     camera_number = int(request.args.get('camera'))
     selected_date = datetime.strptime(request.args.get('date'), "%Y-%m-%d")
+    selected_year = selected_date.year
     print("Client selected date: ", selected_date)
     # camera_number = int(request.form["camera_number"])
     # selected_date = datetime.strptime(request.form["selected_date"], "%Y-%m-%d")
@@ -52,9 +52,9 @@ def get_images():
     try:
 
         # Build the image path based on camera number and date
-        directory_name_pi_camera = f"{main_folder}/pi{camera_number}/pi_camera/"
-        directory_name_lepton = f"{main_folder}/pi{camera_number}/lepton/"
-        directory_name_mlx = f"{main_folder}/pi{camera_number}/mlx/"
+        directory_name_pi_camera = f"{selected_year}/upload/pi{camera_number}/pi_camera/"
+        directory_name_lepton = f"{selected_year}/upload/pi{camera_number}/lepton/"
+        directory_name_mlx = f"{selected_year}/upload/pi{camera_number}/mlx/"
 
         directory_client_pi_camera = share_client.get_directory_client(directory_name_pi_camera)
         directory_client_lepton = share_client.get_directory_client(directory_name_lepton)
