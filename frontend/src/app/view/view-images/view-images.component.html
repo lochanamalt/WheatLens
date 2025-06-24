@@ -1,15 +1,14 @@
 <div class="container">
   <div class="row">
-    <div class="col">
+    <div class="col-md-3 col-12">
       <mat-form-field>
         <mat-label>Select Year</mat-label>
-        <mat-select [(ngModel)]="selectedYear">
+        <mat-select [(ngModel)]="selectedYear" (selectionChange)="onYearChange($event)">
           <mat-option *ngFor="let year of years" [value]="year" >{{ year }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="col">
-
+    <div class="col-md-3 col-12">
       <mat-form-field>
         <mat-label>Select Site</mat-label>
         <mat-select [(ngModel)]="selectedSite">
@@ -17,7 +16,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="col">
+    <div class="col-md-3 col-12" *ngIf="selectedYear == 2024 || (selectedYear == 2025 && cameraSelected)">
       <mat-form-field>
         <mat-label>Select Camera</mat-label>
         <mat-select [(ngModel)]="selectedCamera">
@@ -25,98 +24,116 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="col">
-      <mat-form-field appearance="fill">
-        <mat-label>Pick Date</mat-label>
-        <input matInput  [matDatepicker]="picker" [(ngModel)]="selectedDate" [min]="minDate" [max]="maxDate" required>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+    <div class="col-12 d-md-none">
+            <mat-form-field appearance="fill">
+              <mat-label>Pick Date</mat-label>
+              <input matInput  [matDatepicker]="picker" [(ngModel)]="selectedDate" [min]="minDate" [max]="maxDate"
+                     (dateChange)="onDateChange()" required>
+              <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
     </div>
-    <div class="col">
-      <button mat-raised-button (click)="searchImages()">Search</button>
+    <div class="col-xl-3 col-12" *ngIf="selectedYear == 2025 && !showMap">
+      <button mat-raised-button (click)="goBackToMapView()">Back to Map View</button>
     </div>
   </div>
 
   <br />
 
-  <div class="image-viewer" *ngIf="searched">
-    <h5>Pi Camera</h5>
+  <app-map *ngIf="selectedSite == SiteData.andrew_farm &&  selectedYear == 2025 && showMap"
+           (selectedMarker)="handleMarkerSelection($event)"></app-map>
 
-    <app-loader *ngIf="loading"></app-loader>
-    <app-no-data *ngIf="!loading && pi_camera_images.length <= 0"></app-no-data>
-    @if (!loading && pi_camera_images.length > 0) {
-      <div class="carousel-animation-wrapper">
-        <igx-carousel #carousel>
-          <igx-slide *ngFor="let slide of pi_camera_images;">
-            <div class="slide-wrapper">
-              <igx-card elevated>
-                <igx-card-header>
-                  <h4 igxCardHeaderTitle>{{slide.timestamp}}</h4>
-                </igx-card-header>
-                <igx-card-media>
-                  <img [src]="'data:image/jpeg;base64,' + slide.image_file">
-                </igx-card-media>
+  <div class="row" *ngIf="cameraSelected">
+    <div class="col-md-8 col-lg-10 col-12">
+      <div class="image-viewer" *ngIf="searched">
+        <h5>Pi Camera</h5>
 
-                <!--                <igx-card-actions>-->
-                <!--                  <a igxButton="fab" href="{{slide.link}}" target="_blank" rel="noopener" style="text-decoration: none;" igxStart>visit page</a>-->
-                <!--                </igx-card-actions>-->
-              </igx-card>
-            </div>
-          </igx-slide>
-          <ng-template igxCarouselIndicator></ng-template>
-        </igx-carousel>
+        <app-loader *ngIf="loading"></app-loader>
+        <app-no-data *ngIf="!loading && pi_camera_images.length <= 0"></app-no-data>
+        @if (!loading && pi_camera_images.length > 0) {
+          <div class="carousel-animation-wrapper">
+            <igx-carousel #carousel>
+              <igx-slide *ngFor="let slide of pi_camera_images;">
+                <div class="slide-wrapper">
+                  <igx-card elevated>
+                    <igx-card-header>
+                      <h4 igxCardHeaderTitle>{{slide.timestamp}}</h4>
+                    </igx-card-header>
+                    <igx-card-media>
+                      <img [src]="'data:image/jpeg;base64,' + slide.image_file">
+                    </igx-card-media>
+
+                    <!--                <igx-card-actions>-->
+                    <!--                  <a igxButton="fab" href="{{slide.link}}" target="_blank" rel="noopener" style="text-decoration: none;" igxStart>visit page</a>-->
+                    <!--                </igx-card-actions>-->
+                  </igx-card>
+                </div>
+              </igx-slide>
+              <ng-template igxCarouselIndicator></ng-template>
+            </igx-carousel>
+          </div>
+        }
+
+        <h5>Lepton Thermal Camera</h5>
+        <app-loader *ngIf="loading"></app-loader>
+        <app-no-data *ngIf="!loading && lepton_camera_images.length <= 0"></app-no-data>
+        <div *ngIf="!loading && lepton_camera_images.length > 0" class="carousel-animation-wrapper-lepton">
+          <igx-carousel #carousel>
+            <igx-slide *ngFor="let slide of lepton_camera_images;">
+              <div class="slide-wrapper">
+                <igx-card elevated>
+                  <igx-card-header>
+                    <h4 igxCardHeaderTitle>{{slide.timestamp}}</h4>
+                  </igx-card-header>
+                  <igx-card-media>
+                    <img [src]="'data:image/jpeg;base64,' + slide.image_file">
+                  </igx-card-media>
+
+                  <!--                <igx-card-actions>-->
+                  <!--                  <a igxButton="fab" href="{{slide.link}}" target="_blank" rel="noopener" style="text-decoration: none;" igxStart>visit page</a>-->
+                  <!--                </igx-card-actions>-->
+                </igx-card>
+              </div>
+            </igx-slide>
+            <ng-template igxCarouselIndicator></ng-template>
+          </igx-carousel>
+        </div>
+        <h5>MLX Thermal Sensor</h5>
+        <app-loader *ngIf="loading"></app-loader>
+        <app-no-data *ngIf="!loading && mlx_sensor_images.length <= 0"></app-no-data>
+        <div *ngIf="!loading && mlx_sensor_images.length > 0" class="carousel-animation-wrapper">
+          <igx-carousel #carousel>
+            <igx-slide *ngFor="let slide of mlx_sensor_images;">
+              <div class="slide-wrapper">
+                <igx-card elevated>
+                  <igx-card-header>
+                    <h4 igxCardHeaderTitle>{{slide.timestamp}}</h4>
+                  </igx-card-header>
+                  <igx-card-media>
+                    <img [src]="'data:image/jpeg;base64,' + slide.image_file">
+                  </igx-card-media>
+
+                  <!--                <igx-card-actions>-->
+                  <!--                  <a igxButton="fab" href="{{slide.link}}" target="_blank" rel="noopener" style="text-decoration: none;" igxStart>visit page</a>-->
+                  <!--                </igx-card-actions>-->
+                </igx-card>
+              </div>
+            </igx-slide>
+            <ng-template igxCarouselIndicator></ng-template>
+          </igx-carousel>
+        </div>
       </div>
-    }
-
-    <h5>Lepton Thermal Camera</h5>
-    <app-loader *ngIf="loading"></app-loader>
-    <app-no-data *ngIf="!loading && lepton_camera_images.length <= 0"></app-no-data>
-    <div *ngIf="!loading && lepton_camera_images.length > 0" class="carousel-animation-wrapper-lepton">
-      <igx-carousel #carousel>
-        <igx-slide *ngFor="let slide of lepton_camera_images;">
-          <div class="slide-wrapper">
-            <igx-card elevated>
-              <igx-card-header>
-                <h4 igxCardHeaderTitle>{{slide.timestamp}}</h4>
-              </igx-card-header>
-              <igx-card-media>
-                <img [src]="'data:image/jpeg;base64,' + slide.image_file">
-              </igx-card-media>
-
-              <!--                <igx-card-actions>-->
-              <!--                  <a igxButton="fab" href="{{slide.link}}" target="_blank" rel="noopener" style="text-decoration: none;" igxStart>visit page</a>-->
-              <!--                </igx-card-actions>-->
-            </igx-card>
-          </div>
-        </igx-slide>
-        <ng-template igxCarouselIndicator></ng-template>
-      </igx-carousel>
     </div>
-    <h5>MLX Thermal Sensor</h5>
-    <app-loader *ngIf="loading"></app-loader>
-    <app-no-data *ngIf="!loading && mlx_sensor_images.length <= 0"></app-no-data>
-    <div *ngIf="!loading && mlx_sensor_images.length > 0" class="carousel-animation-wrapper">
-      <igx-carousel #carousel>
-        <igx-slide *ngFor="let slide of mlx_sensor_images;">
-          <div class="slide-wrapper">
-            <igx-card elevated>
-              <igx-card-header>
-                <h4 igxCardHeaderTitle>{{slide.timestamp}}</h4>
-              </igx-card-header>
-              <igx-card-media>
-                <img [src]="'data:image/jpeg;base64,' + slide.image_file">
-              </igx-card-media>
+    <div class="col-md-4 col-lg-2 d-none d-md-block ">
 
-              <!--                <igx-card-actions>-->
-              <!--                  <a igxButton="fab" href="{{slide.link}}" target="_blank" rel="noopener" style="text-decoration: none;" igxStart>visit page</a>-->
-              <!--                </igx-card-actions>-->
-            </igx-card>
-          </div>
-        </igx-slide>
-        <ng-template igxCarouselIndicator></ng-template>
-      </igx-carousel>
+      <mat-card>
+        <mat-calendar [(selected)]="selectedDate" (selectedChange)="onDateChange()" [startAt]="selectedDate"
+                      [minDate]="minDate" [maxDate]="maxDate"></mat-calendar>
+      </mat-card>
+
+
     </div>
   </div>
+
 </div>
 
