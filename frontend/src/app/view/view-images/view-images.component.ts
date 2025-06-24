@@ -1,9 +1,15 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatSelectModule} from "@angular/material/select";
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatSelectChange, MatSelectModule} from "@angular/material/select";
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgForOf, NgIf, TitleCasePipe} from "@angular/common";
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {MatCalendar, MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {
@@ -16,8 +22,10 @@ import {LoaderComponent} from "../../shared/loader/loader.component";
 import {NoDataComponent} from "../../shared/no-data/no-data.component";
 import {ImagesService} from "../../images.service";
 import {Image} from "../../data/image";
-import {ImagesResponse} from "../../data/images-response";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MapComponent} from "../map/map.component";
+import {MatCard} from "@angular/material/card";
+import {SiteData} from "../../data/site-data";
 
 @Component({
   selector: 'app-view-images',
@@ -31,15 +39,18 @@ import {MatSnackBar} from "@angular/material/snack-bar";
     IgxButtonModule,
     IgxCardModule,
     NgForOf,
-    MatDatepickerInput,
-    MatDatepickerToggle,
-    MatDatepicker,
     MatButton,
-    TitleCasePipe,
     LoaderComponent,
     NgIf,
     NoDataComponent,
     ReactiveFormsModule,
+    MapComponent,
+    MatCard,
+    MatCalendar,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatDatepicker
+
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './view-images.component.html',
@@ -49,11 +60,11 @@ export class ViewImagesComponent implements OnInit{
   @ViewChild('carousel', { static: true }) public carousel!: IgxCarouselComponent;
 
   selectedYear!: number;
-  years: number[] = [2024]
+  years: number[] = [2024, 2025]
   selectedCamera!: number;
-  cameras: number[] = [1,2,3,4,5,6,7,8];
+  cameras: number[] = [];
   selectedSite!: string;
-  sites: string [] = ["Othello"];
+  sites: string [] = [];
   selectedDate!: Date;
   minDate!: Date;
   maxDate!: Date;
@@ -64,6 +75,8 @@ export class ViewImagesComponent implements OnInit{
   selectedDateMissing = false;
   loading: boolean = false;
   searched: boolean = false;
+  cameraSelected: boolean = false;
+  showMap!: boolean;
 
 
   constructor(private imageService: ImagesService,private cdRef: ChangeDetectorRef,private _snackBar: MatSnackBar) {
@@ -71,15 +84,11 @@ export class ViewImagesComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.selectedYear = this.years[0];
-    this.selectedCamera = this.cameras[0];
-    this.selectedSite = this.sites[0];
-
-    if (this.selectedYear == 2024) {
-      this.minDate = new Date(this.selectedYear, 3,27);
-      this.maxDate = new Date(this.selectedYear, 6,15);
-    }
+    this.showMap = true;
+    this.selectedYear = this.years[this.years.length - 1];
+    this.yearChanged()
   }
+
 
 
   searchImages() {
@@ -119,5 +128,51 @@ export class ViewImagesComponent implements OnInit{
         image_file: 'https://www.infragistics.com/angular-demos-lob/assets/images/carousel/slide3-aspnet.png',
       }
     );
+  }
+
+  onYearChange($event: MatSelectChange) {
+    this.yearChanged()
+  }
+
+
+
+  yearChanged(){
+    this.sites = [...SiteData.sitesByYear[this.selectedYear].sites];
+    this.cameras = [...SiteData.sitesByYear[this.selectedYear].cameras];
+    this.selectedCamera = this.cameras[0];
+    this.selectedSite = this.sites[0];
+
+    if (this.selectedYear == 2024) {
+      this.minDate = new Date(this.selectedYear, 3,27);
+      this.maxDate = new Date(this.selectedYear, 6,15);
+
+      this.selectedDate = new Date(this.selectedYear, 3,30);
+      this.cameraSelected = true;
+      this.searchImages();
+    }
+    else if (this.selectedYear == 2025) {
+      this.minDate = new Date(this.selectedYear, 4,20);
+      this.maxDate = new Date(this.selectedYear, 7,15);
+      this.selectedDate = new Date(this.selectedYear, 4,21);
+    }
+  }
+
+  protected readonly SiteData = SiteData;
+
+
+  onDateChange() {
+    this.searchImages()
+  }
+
+  handleMarkerSelection(markerId: number) {
+    this.selectedCamera = this.cameras[markerId-1];
+    this.cameraSelected = true;
+    this.showMap = false;
+    this.searchImages();
+  }
+
+  goBackToMapView() {
+    this.showMap = true;
+    this.cameraSelected = false;
   }
 }

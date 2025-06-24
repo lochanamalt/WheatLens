@@ -1,6 +1,9 @@
 .container{
   padding: 10px;
   margin: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 :host {
   display: flex;
