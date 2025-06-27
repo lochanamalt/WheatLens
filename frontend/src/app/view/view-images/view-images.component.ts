@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectChange, MatSelectModule} from "@angular/material/select";
-import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {NgForOf, NgIf, TitleCasePipe} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {NgForOf, NgIf} from "@angular/common";
 import {MatCalendar, MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
@@ -130,32 +130,46 @@ export class ViewImagesComponent implements OnInit{
     );
   }
 
-  onYearChange($event: MatSelectChange) {
+  onYearChange() {
     this.yearChanged()
   }
 
 
 
   yearChanged(){
+
     this.sites = [...SiteData.sitesByYear[this.selectedYear].sites];
     this.cameras = [...SiteData.sitesByYear[this.selectedYear].cameras];
     this.selectedCamera = this.cameras[0];
     this.selectedSite = this.sites[0];
 
-    if (this.selectedYear == 2024) {
-      this.minDate = new Date(this.selectedYear, 3,27);
-      this.maxDate = new Date(this.selectedYear, 6,15);
+    let currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - 1);
 
-      this.selectedDate = new Date(this.selectedYear, 3,30);
+    this.minDate = SiteData.sitesByYear[this.selectedYear].season_start
+    this.maxDate = SiteData.sitesByYear[this.selectedYear].season_end
+
+    if (currentDate > this.maxDate) {
+      this.selectedDate = new Date(this.maxDate);
+    }
+    else {
+      this.selectedDate = currentDate;
+      this.maxDate = currentDate;
+    }
+
+
+    if (this.selectedYear == 2024) {
       this.cameraSelected = true;
+      this.showMap = false;
       this.searchImages();
     }
-    else if (this.selectedYear == 2025) {
-      this.minDate = new Date(this.selectedYear, 4,20);
-      this.maxDate = new Date(this.selectedYear, 7,15);
-      this.selectedDate = new Date(this.selectedYear, 4,21);
+    else {
+      this.showMap = true;
+      this.cameraSelected = false;
     }
+
   }
+
 
   protected readonly SiteData = SiteData;
 

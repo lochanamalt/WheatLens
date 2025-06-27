@@ -3,7 +3,7 @@
     <div class="col-md-3 col-12">
       <mat-form-field>
         <mat-label>Select Year</mat-label>
-        <mat-select [(ngModel)]="selectedYear" (selectionChange)="onYearChange($event)">
+        <mat-select [(ngModel)]="selectedYear" (selectionChange)="onYearChange()">
           <mat-option *ngFor="let year of years" [value]="year" >{{ year }}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -19,7 +19,7 @@
     <div class="col-md-3 col-12" *ngIf="selectedYear == 2024 || (selectedYear == 2025 && cameraSelected)">
       <mat-form-field>
         <mat-label>Select Camera</mat-label>
-        <mat-select [(ngModel)]="selectedCamera">
+        <mat-select [(ngModel)]="selectedCamera" (selectionChange)="searchImages()">
           <mat-option *ngFor="let camera of cameras" [value]="camera">{{ camera }}</mat-option>
         </mat-select>
       </mat-form-field>
