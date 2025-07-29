@@ -86,7 +86,7 @@ export class ViewImagesComponent implements OnInit{
   ngOnInit(): void {
     this.showMap = true;
     this.selectedYear = this.years[this.years.length - 1];
-    console.log("this selected year" + this.selectedYear);
+    console.log("this selected year");
     this.yearChanged()
   }
 
