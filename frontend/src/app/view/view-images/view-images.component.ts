@@ -6,7 +6,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatSelectChange, MatSelectModule} from "@angular/material/select";
+import {MatSelectModule} from "@angular/material/select";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {MatCalendar, MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
@@ -23,7 +23,7 @@ import {NoDataComponent} from "../../shared/no-data/no-data.component";
 import {ImagesService} from "../../images.service";
 import {Image} from "../../data/image";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {MapComponent} from "../map/map.component";
+import {MapComponent} from "../../shared/map/map.component";
 import {MatCard} from "@angular/material/card";
 import {SiteData} from "../../data/site-data";
 
@@ -72,7 +72,6 @@ export class ViewImagesComponent implements OnInit{
   public lepton_camera_images: Image[] = [];
   public mlx_sensor_images: Image[] = [];
   public animations = ['slide', 'fade', 'none'];
-  selectedDateMissing = false;
   loading: boolean = false;
   searched: boolean = false;
   cameraSelected: boolean = false;
@@ -85,7 +84,8 @@ export class ViewImagesComponent implements OnInit{
 
   ngOnInit(): void {
     this.showMap = true;
-    this.selectedYear = this.years[this.years.length - 1];
+    // this.selectedYear = this.years[this.years.length - 1];
+    this.selectedYear = this.years[0];
     this.yearChanged()
   }
 
@@ -111,23 +111,6 @@ export class ViewImagesComponent implements OnInit{
     }
 
 
-  }
-
-  public addSlides() {
-    this.pi_camera_images.push(
-      {
-        timestamp: 'Ignite UI for Angular',
-        image_file: 'https://www.infragistics.com/angular-demos-lob/assets/images/carousel/slide1-angular.png',
-      },
-      {
-        timestamp: 'Ignite UI for Javascript',
-        image_file: 'https://www.infragistics.com/angular-demos-lob/assets/images/carousel/slide2-ignite.png',
-      },
-      {
-        timestamp: 'Ultimate UI for ASP.NET',
-        image_file: 'https://www.infragistics.com/angular-demos-lob/assets/images/carousel/slide3-aspnet.png',
-      }
-    );
   }
 
   onYearChange() {
