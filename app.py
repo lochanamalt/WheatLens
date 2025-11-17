@@ -10,6 +10,10 @@ from azure.storage.fileshare import ShareServiceClient, FileProperties
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from iniparse import ConfigParser
+
+import matplotlib
+matplotlib.use("Agg")
+
 from matplotlib import pyplot as plt
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import Normalize
