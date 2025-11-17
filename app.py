@@ -5,18 +5,12 @@ from datetime import datetime
 
 import numpy as np
 import rasterio
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 from azure.storage.fileshare import ShareServiceClient, FileProperties
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from iniparse import ConfigParser
 
-import matplotlib
-matplotlib.use("Agg")
-
-from matplotlib import pyplot as plt
-from matplotlib.cm import ScalarMappable
-from matplotlib.colors import Normalize
 
 
 def get_connection_string():
@@ -238,37 +232,61 @@ def process_ndvi_tiff(vi_stream, mask_stream):
     mask_img = Image.open(mask_stream).convert("L")
     mask = (np.array(mask_img) > 0).astype(np.uint8)
 
-    # apply colormap
-    cmap = plt.cm.RdYlGn
-    norm = Normalize(vmin=-1, vmax=1)
-    ndvi_colored = cmap(norm(ndvi))
-
-    alpha_background = 0.2
+    rgb = ndvi_to_rgb(ndvi)
     alpha_canopy = 1.0
-    alpha_mask = np.where(mask == 1, alpha_canopy, alpha_background)
+    alpha_background = 0.2
+    alpha = alpha_background + (alpha_canopy - alpha_background) * mask
+    rgb = (rgb * alpha[..., None] * 255).astype(np.uint8)
+    ndvi_img = Image.fromarray(rgb, mode="RGB")
 
-    final_image = ndvi_colored.copy()
-    final_image[..., :3] *= alpha_mask[..., None]
-    final_image[..., 3] = 1.0
+    colorbar = generate_colorbar(height=ndvi_img.height, width=50)
 
-    fig, ax = plt.subplots(figsize=(8, 6))
-    ax.imshow(final_image)
-    ax.axis("off")
+    # Concatenate image + colorbar
+    combined = Image.new("RGB", (ndvi_img.width + colorbar.width + 10, ndvi_img.height), (255, 255, 255))
+    combined.paste(ndvi_img, (0, 0))
+    combined.paste(colorbar, (ndvi_img.width + 10, 0))
 
-    sm = ScalarMappable(norm=norm, cmap=cmap)
-    sm.set_array([])
-    cbar = plt.colorbar(sm, ax=ax, fraction=0.046, pad=0.04)
-    cbar.set_label("NDVI")
-
-    plt.tight_layout()
-
-    # Save figure to memory buffer
+    # Save to buffer
     buf = io.BytesIO()
-    fig.savefig(buf, dpi=300, format="png", bbox_inches="tight")
-    plt.close(fig)
+    combined.save(buf, format="PNG")
     buf.seek(0)
     return buf
 
+def ndvi_to_rgb(ndvi):
+    # 5 anchor colors: dark red, orange, yellow, light green, dark green
+    stops = np.array([-1, -0.5, 0, 0.5, 1])
+    colors = np.array([
+        [165, 0, 38],
+        [244, 109, 67],
+        [255, 255, 191],
+        [166, 217, 106],
+        [0, 104, 55]
+    ], dtype=np.float32)/255
+    r = np.interp(ndvi, stops, colors[:,0])
+    g = np.interp(ndvi, stops, colors[:,1])
+    b = np.interp(ndvi, stops, colors[:,2])
+    return np.stack([r,g,b], axis=-1)
+
+
+def generate_colorbar(height, width=50):
+    gradient = np.linspace(1, -1, height)
+    rgb = ndvi_to_rgb(gradient[:, None])
+    rgb = (rgb * 255).astype(np.uint8)
+    img = Image.fromarray(rgb, mode="RGB").resize((width, height))
+
+    # Draw ticks and labels
+    draw = ImageDraw.Draw(img)
+    try:
+        font = ImageFont.truetype("arial.ttf", 20)  # Use Arial
+    except:
+        font = ImageFont.load_default()
+
+    ticks = [-1, -0.5, 0, 0.5, 1]
+    for t in ticks:
+        y = int((1 - t) / 2 * height)
+        draw.line([(0, y), (5, y)], fill=(0, 0, 0))
+        draw.text((6, y - 6), str(t), fill=(0, 0, 0), font=font)
+    return img
 
 if __name__ == "__main__":
     app.run(debug=True)
