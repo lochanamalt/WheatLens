@@ -20,12 +20,12 @@
           <span *ngIf="!isCollapsed">View Image</span>
         </span>
       </a>
-<!--      <a mat-list-item routerLink="/view-ndvi" routerLinkActive="inactive" (click)="changeTitle('NDVI')">-->
-<!--      <span class="entry">-->
-<!--          <mat-icon>collections</mat-icon>-->
-<!--          <span *ngIf="!isCollapsed">NDVI</span>-->
-<!--        </span>-->
-<!--      </a>-->
+      <a mat-list-item routerLink="/vegetation-indices" routerLinkActive="active" (click)="changeTitle('Vegetation Indices')">
+      <span class="entry">
+          <mat-icon color="primary">trending_up</mat-icon>
+          <span *ngIf="!isCollapsed">Vegetation Indices</span>
+        </span>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
