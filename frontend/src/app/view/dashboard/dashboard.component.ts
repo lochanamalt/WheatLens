@@ -9,6 +9,7 @@ import {
 } from "ng-apexcharts";
 import {CommonModule} from "@angular/common";
 import {ViType} from "../../data/vi-type";
+import {LoaderComponent} from "../../shared/loader/loader.component";
 
 export type ChartOptions = {
   chart: ApexChart;
@@ -29,7 +30,8 @@ export type ChartData = {
   standalone: true,
   imports: [
     ChartComponent,
-    CommonModule
+    CommonModule,
+    LoaderComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

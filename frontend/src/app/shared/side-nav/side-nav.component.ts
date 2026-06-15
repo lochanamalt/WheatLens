@@ -33,17 +33,13 @@ export class SideNavComponent {
   sidenav!: MatSidenav;
   isCollapsed!: boolean;
   isMobile!: boolean;
-  pageTitle: string = "View Image";
+  pageTitle: string = "Dashboard";
 
   constructor(private observer: BreakpointObserver) {}
 
   ngOnInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((screenSize) => {
-      if(screenSize.matches){
-        this.isMobile = true;
-      } else {
-        this.isMobile = false;
-      }
+      this.isMobile = screenSize.matches;
     });
   }
 
