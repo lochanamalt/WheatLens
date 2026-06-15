@@ -3,44 +3,52 @@
   [parentDate]="selectedDate"></app-pi-cam-selector >
 
   <br />
+  @if (cameraSelected) {
+    <div class="row">
+      <div class="col-md-8 col-lg-10 col-12">
+        @if (searched) {
+          <div class="image-viewer">
+            <h5>Normalized Difference Vegetation Index (NDVI)</h5>
 
-  <div class="row" *ngIf="cameraSelected">
-    <div class="col-md-8 col-lg-10 col-12">
-      <div class="image-viewer" *ngIf="searched">
-        <h5>Normalized Difference Vegetation Index (NDVI)</h5>
-
-        <app-loader *ngIf="loading"></app-loader>
-        <app-no-data *ngIf="!loading && ndvi_images.length <= 0"></app-no-data>
-        @if (!loading && ndvi_images.length > 0) {
-          <div class="carousel-animation-wrapper">
-            <igx-carousel #carousel>
-              <igx-slide *ngFor="let slide of ndvi_images;">
-                <div class="slide-wrapper">
-                  <igx-card elevated>
-                    <igx-card-header>
-                      <h4 igxCardHeaderTitle>{{slide.timestamp}}</h4>
-                    </igx-card-header>
-                    <igx-card-media>
-                      <img [src]="'data:image/jpeg;base64,' + slide.image_file">
-                    </igx-card-media>
-                  </igx-card>
-                </div>
-              </igx-slide>
-              <ng-template igxCarouselIndicator></ng-template>
-            </igx-carousel>
+            @if (loading) {
+              <app-loader></app-loader>
+            } @else if (ndvi_images.length <= 0) {
+              <app-no-data ></app-no-data>
+            } @else if (ndvi_images.length > 0) {
+              <div class="carousel-animation-wrapper">
+                <igx-carousel #carousel>
+                  @for (slide of ndvi_images; track $index) {
+                    <igx-slide>
+                      <div class="slide-wrapper">
+                        <igx-card elevated>
+                          <igx-card-header>
+                            <h4 igxCardHeaderTitle>{{slide.timestamp}}</h4>
+                          </igx-card-header>
+                          <igx-card-media>
+                            <img [src]="'data:image/jpeg;base64,' + slide.image_file">
+                          </igx-card-media>
+                        </igx-card>
+                      </div>
+                    </igx-slide>
+                  }
+                  <ng-template igxCarouselIndicator></ng-template>
+                </igx-carousel>
+              </div>
+            }
           </div>
         }
+
+      </div>
+      <div class="col-md-4 col-lg-2 d-none d-md-block ">
+
+        <mat-card>
+          <mat-calendar [(selected)]="selectedDate" (selectedChange)="onDateChange()" [startAt]="selectedDate"
+                        [minDate]="minDate" [maxDate]="maxDate"></mat-calendar>
+        </mat-card>
+
       </div>
     </div>
-    <div class="col-md-4 col-lg-2 d-none d-md-block ">
+  }
 
-      <mat-card>
-        <mat-calendar [(selected)]="selectedDate" (selectedChange)="onDateChange()" [startAt]="selectedDate"
-                      [minDate]="minDate" [maxDate]="maxDate"></mat-calendar>
-      </mat-card>
-
-
-    </div>
-  </div>
 
 </div>

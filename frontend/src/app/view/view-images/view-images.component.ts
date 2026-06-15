@@ -8,7 +8,7 @@ import {
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {NgForOf, NgIf} from "@angular/common";
+import {CommonModule} from "@angular/common";
 import {MatCalendar, MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
@@ -20,7 +20,7 @@ import {
 } from "igniteui-angular";
 import {LoaderComponent} from "../../shared/loader/loader.component";
 import {NoDataComponent} from "../../shared/no-data/no-data.component";
-import {ImagesService} from "../../images.service";
+import {ImagesService} from "../../services/images.service";
 import {Image} from "../../data/image";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MapComponent} from "../../shared/map/map.component";
@@ -37,10 +37,9 @@ import {SiteData} from "../../data/site-data";
         IgxCarouselModule,
         IgxButtonModule,
         IgxCardModule,
-        NgForOf,
+        CommonModule,
         MatButton,
         LoaderComponent,
-        NgIf,
         NoDataComponent,
         ReactiveFormsModule,
         MapComponent,

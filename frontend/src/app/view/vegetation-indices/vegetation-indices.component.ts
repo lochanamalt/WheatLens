@@ -9,10 +9,9 @@ import {
 import {LoaderComponent} from "../../shared/loader/loader.component";
 import {MatCalendar} from "@angular/material/datepicker";
 import {MatCard} from "@angular/material/card";
-import {NgForOf, NgIf} from "@angular/common";
 import {NoDataComponent} from "../../shared/no-data/no-data.component";
 import {Image} from "../../data/image";
-import {ImagesService} from "../../images.service";
+import {ImagesService} from "../../services/images.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
@@ -29,8 +28,6 @@ import {MatSnackBar} from "@angular/material/snack-bar";
         LoaderComponent,
         MatCalendar,
         MatCard,
-        NgForOf,
-        NgIf,
         NoDataComponent
     ],
     templateUrl: './vegetation-indices.component.html',
