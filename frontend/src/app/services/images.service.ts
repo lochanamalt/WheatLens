@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {catchError, throwError} from "rxjs";
 import {DatePipe} from "@angular/common";
-import {ImagesResponse} from "./data/images-response";
-import {EnvironmentService} from "./environment.service";
-import {ViImageResponse} from "./data/vi-image-response";
+import {ImagesResponse} from "../data/images-response";
+import {EnvironmentService} from "../environment.service";
+import {ViImageResponse} from "../data/vi-image-response";
 
 @Injectable({
   providedIn: 'root'
