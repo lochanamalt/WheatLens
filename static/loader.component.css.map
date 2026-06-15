@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/shared/loader/loader.component.css"],
+  "sourcesContent": [".loading {\r\n  display: flex;\r\n  min-height: 50px;\r\n  align-items: center;\r\n  justify-content: center;\r\n}\r\n\r\n.loading-icon{\r\n  height: 150px;\r\n}\r\n"],
+  "mappings": ";AAAA,CAAC;AACC,WAAS;AACT,cAAY;AACZ,eAAa;AACb,mBAAiB;AACnB;AAEA,CAAC;AACC,UAAQ;AACV;",
+  "names": []
+}

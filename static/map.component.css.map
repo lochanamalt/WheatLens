@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/shared/map/map.component.css"],
+  "sourcesContent": [".map-container {\r\n  /*position: absolute;*/\r\n  /*top: 150px;*/\r\n  /*left: 0;*/\r\n  /*right: 0;*/\r\n  /*bottom: 0;*/\r\n  /*margin: 30px;*/\r\n\r\n  flex: 1; /* Take all remaining space */\r\n  display: flex;\r\n  height: 80vh;\r\n  margin: 10px;\r\n}\r\n\r\n.map-frame {\r\n  border: 2px solid black;\r\n  height: 100%;\r\n\r\n  flex: 1;\r\n  position: relative;\r\n}\r\n\r\n#map {\r\n  height: 100%;\r\n\r\n  position: absolute;\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  left: 0;\r\n}\r\n\r\n\r\n\r\n"],
+  "mappings": ";AAAA,CAAC;AAQC,QAAM;AACN,WAAS;AACT,UAAQ;AACR,UAAQ;AACV;AAEA,CAAC;AACC,UAAQ,IAAI,MAAM;AAClB,UAAQ;AAER,QAAM;AACN,YAAU;AACZ;AAEA,CAAC;AACC,UAAQ;AAER,YAAU;AACV,OAAK;AACL,UAAQ;AACR,SAAO;AACP,QAAM;AACR;",
+  "names": []
+}

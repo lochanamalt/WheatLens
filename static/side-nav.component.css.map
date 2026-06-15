@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/shared/side-nav/side-nav.component.css"],
+  "sourcesContent": ["h1 {\r\n  padding: 0 1rem;\r\n}\r\n\r\nh2 {padding: 1rem;}\r\n\r\nmat-toolbar{\r\n  position:fixed;\r\n  top:0;\r\n  z-index: 2;\r\n  background: #004f4f;\r\n}\r\n\r\nmat-sidenav-container {\r\n  height:100%;\r\n}\r\n\r\n\r\nmat-sidenav {\r\n  padding-top: 3.5rem;\r\n  /*transition: width 0.3s ease;*/\r\n  @media screen and (min-width: 600px) {\r\n    padding-top: 4rem;\r\n  }\r\n\r\n  .entry{\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 1rem;\r\n    padding:0.75rem;\r\n  }\r\n\r\n}\r\n\r\n\r\nmat-sidenav-content{\r\n  padding-top: 3.5rem ;\r\n  padding-left: 10px;\r\n  @media screen and (min-width: 600px) {\r\n    padding-top: 4rem;\r\n  }\r\n}\r\n\r\n.expanded {\r\n  width: 250px;\r\n}\r\n\r\n\r\n.mat-drawer-side {\r\n  border-right-style: ridge !important;\r\n}\r\n\r\n.example-spacer {\r\n  flex: 1 1 auto;\r\n}\r\n\r\n.content-container {\r\n  min-height: 100vh;\r\n  box-sizing: border-box;\r\n  padding: 15px;\r\n}\r\n"],
+  "mappings": ";AAAA;AACE,WAAS,EAAE;AACb;AAEA;AAAI,WAAS;AAAK;AAElB;AACE,YAAS;AACT,OAAI;AACJ,WAAS;AACT,cAAY;AACd;AAEA;AACE,UAAO;AACT;AAGA;AACE,eAAa;AAaf;AAXE,OAAO,YAAW,WAAY;AAA9B,EAHF;AAII,iBAAa;AAAA;AACf;AALF,YAOE,CAAC;AACC,WAAS;AACT,eAAa;AACb,OAAK;AACL,WAAQ;AACV;AAKF;AACE,eAAa;AACb,gBAAc;AAIhB;AAHE,OAAO,YAAW,WAAY;AAA9B,EAHF;AAII,iBAAa;AAAA;AACf;AAGF,CAAC;AACC,SAAO;AACT;AAGA,CAAC;AACC,sBAAoB;AACtB;AAEA,CAAC;AACC,QAAM,EAAE,EAAE;AACZ;AAEA,CAAC;AACC,cAAY;AACZ,cAAY;AACZ,WAAS;AACX;",
+  "names": []
+}
