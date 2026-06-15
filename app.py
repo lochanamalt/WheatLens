@@ -9,25 +9,48 @@ from PIL import Image
 from azure.storage.fileshare import ShareServiceClient, FileProperties
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from influxdb_client import InfluxDBClient
 from iniparse import ConfigParser
 from matplotlib import pyplot as plt
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import Normalize
 
+from vegetation_indices import VI, get_influxdb_field
+
+config = ConfigParser()
+config.read('config.properties')
+env =  config.get('DEFAULT', 'env')
 
 def get_connection_string():
     """Reads the Azure connection string from the config.properties file."""
-    config = ConfigParser()
-    config.read('config.properties')
-    if config.get('DEFAULT', 'env') == 'prod':
-        return 'prod', os.environ.get('CONNECTION_STRING')
+    if env == 'prod':
+        return os.environ.get('CONNECTION_STRING')
     else:
-        return 'dev', config.get('DEFAULT', 'azure.connectionstring')
+        return config.get('DEFAULT', 'azure.connectionstring')
 
+def get_influxdb_connection():
+    """ Read influxdb connection data from the config.properties file."""
+    if env == 'prod':
+        return (
+            os.environ.get('INFLUX_URL'),
+            os.environ.get('INFLUX_ORG'),
+            os.environ.get('INFLUX_BUCKET'),
+            os.environ.get('INFLUX_TOKEN'),
+        )
+    else:
+        return (config.get('DEFAULT', 'influxdb.url'),
+                config.get('DEFAULT', 'influxdb.org'),
+                config.get('DEFAULT', 'influxdb.bucket'),
+                config.get('DEFAULT', 'influxdb.token'),)
 
 # Azure file share information
-env, connection_string = get_connection_string()
+connection_string = get_connection_string()
 share_name = "othello-data"
+
+# InfluxDB information
+influxdb_url, influxdb_org, influxdb_bucket, influxdb_token = get_influxdb_connection()
+influxdb_client = InfluxDBClient(url=influxdb_url, token=influxdb_token, org=influxdb_org)
+query_api = influxdb_client.query_api()
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 # app = Flask(__name__)
@@ -46,7 +69,6 @@ def index():
 
 
 @app.route("/api/images", methods=["GET"])
-# @app.route("/images", methods=["POST"])
 def get_images():
     print("Getting images")
     camera_number = int(request.args.get('camera'))
@@ -147,7 +169,6 @@ def get_images():
         return f"Error: {str(e)}", 500
 
 @app.route("/api/vi-images", methods=["GET"])
-# @app.route("/images", methods=["POST"])
 def get_vi_images():
     print("Getting VI images")
     camera_number = int(request.args.get('camera'))
@@ -222,6 +243,64 @@ def get_vi_images():
     except Exception as e:
         print(e)
         return f"Error: {str(e)}", 500
+
+
+@app.get("/api/daily-vi-data")
+def get_timeseries_vi():
+    vi =  VI(request.args.get('vi'))
+
+    vegetation_index_field = get_influxdb_field(vi)
+
+    flux_query = f'''
+    from(bucket: "{influxdb_bucket}")
+      |> range(start: 2024-04-01T00:00:00Z, stop: 2024-08-01T00:00:00Z)
+      |> filter(fn: (r) => r._measurement == "vegetation_indices")
+      |> filter(fn: (r) => r._field == "{vegetation_index_field}")
+      |> group(columns: ["plot_id"])    
+      |> aggregateWindow(every: 1d, fn: mean) 
+      |> yield(name: "daily_mean_per_plot")
+    '''
+    return format_timeseries_data_plotwise(flux_query)
+
+
+
+@app.get("/api/daily-temperature-data")
+def get_timeseries_temperature():
+
+    flux_query = f'''
+    from(bucket: "{influxdb_bucket}")
+      |> range(start: 2024-04-01T00:00:00Z, stop: 2024-08-01T00:00:00Z)
+      |> filter(fn: (r) => r._measurement == "crop_temperature")
+      |> filter(fn: (r) => r._field == "lepton_mean_temp")
+      |> filter(fn: (r) => r._value > 0)
+      |> group(columns: ["plot_id"])    
+      |> aggregateWindow(every: 1d, fn: mean) 
+      |> yield(name: "daily_mean_per_plot")
+    '''
+
+    return format_timeseries_data_plotwise(flux_query)
+
+
+def format_timeseries_data_plotwise(flux_query):
+    result = query_api.query(flux_query)
+    series_data = {}
+    for table in result:
+        for record in table.records:
+            plot_id = record.values.get("plot_id", "Unknown Plot")
+
+            if plot_id not in series_data:
+                series_data[plot_id] = []
+
+            if record.get_value() is not None:
+                series_data[plot_id].append({
+                    "x": record.get_time().isoformat(),
+                    "y": round(record.get_value(), 4)
+                })
+    formatted_series = [
+        {"name": f"Plot {plot_id}", "data": data}
+        for plot_id, data in series_data.items() if len(data) > 0
+    ]
+    return {"series": formatted_series}
 
 
 def process_ndvi_tiff(vi_stream, mask_stream):
