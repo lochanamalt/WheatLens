@@ -33,7 +33,8 @@
               "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": [
-              "./node_modules/hammerjs/hammer.min.js"
+              "./node_modules/hammerjs/hammer.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -112,7 +113,8 @@
               "node_modules/igniteui-angular/styles/igniteui-angular.css"
             ],
             "scripts": [
-              "./node_modules/hammerjs/hammer.min.js"
+              "./node_modules/hammerjs/hammer.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
