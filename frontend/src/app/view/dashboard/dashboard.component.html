@@ -1,4 +1,8 @@
 <div class="container">
+  @if (!canopyTempData && !ndviData && !gndviData && !rdviData && !eviData && !saviData
+  && !srData && !cigreenData && !gliData && !variData) {
+    <app-loader></app-loader>
+  }
   @if (canopyTempData && canopyTempData.series) {
     <div  style="padding: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.05)">
       <apx-chart
