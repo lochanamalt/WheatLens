@@ -10,8 +10,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {SiteData} from "../../data/site-data";
 
 @Component({
-  selector: 'app-pi-cam-selector',
-  standalone: true,
+    selector: 'app-pi-cam-selector',
     imports: [
         FormsModule,
         MatButton,
@@ -27,8 +26,8 @@ import {SiteData} from "../../data/site-data";
         NgForOf,
         NgIf
     ],
-  templateUrl: './pi-cam-selector.component.html',
-  styleUrl: './pi-cam-selector.component.css'
+    templateUrl: './pi-cam-selector.component.html',
+    styleUrl: './pi-cam-selector.component.css'
 })
 export class PiCamSelectorComponent implements OnInit, OnChanges{
 

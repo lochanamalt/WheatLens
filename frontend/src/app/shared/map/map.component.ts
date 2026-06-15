@@ -2,11 +2,10 @@ import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/c
 import * as L from 'leaflet';
 
 @Component({
-  selector: 'app-map',
-  standalone: true,
-  imports: [],
-  templateUrl: './map.component.html',
-  styleUrl: './map.component.css'
+    selector: 'app-map',
+    imports: [],
+    templateUrl: './map.component.html',
+    styleUrl: './map.component.css'
 })
 export class MapComponent implements OnInit{
 

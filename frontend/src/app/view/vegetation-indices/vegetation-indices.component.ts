@@ -16,26 +16,25 @@ import {ImagesService} from "../../images.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-vegetation-indices',
-  standalone: true,
-  imports: [
-    PiCamSelectorComponent,
-    IgxCardComponent,
-    IgxCardHeaderComponent,
-    IgxCardHeaderTitleDirective,
-    IgxCardMediaDirective,
-    IgxCarouselComponent,
-    IgxCarouselIndicatorDirective,
-    IgxSlideComponent,
-    LoaderComponent,
-    MatCalendar,
-    MatCard,
-    NgForOf,
-    NgIf,
-    NoDataComponent
-  ],
-  templateUrl: './vegetation-indices.component.html',
-  styleUrl: './vegetation-indices.component.css'
+    selector: 'app-vegetation-indices',
+    imports: [
+        PiCamSelectorComponent,
+        IgxCardComponent,
+        IgxCardHeaderComponent,
+        IgxCardHeaderTitleDirective,
+        IgxCardMediaDirective,
+        IgxCarouselComponent,
+        IgxCarouselIndicatorDirective,
+        IgxSlideComponent,
+        LoaderComponent,
+        MatCalendar,
+        MatCard,
+        NgForOf,
+        NgIf,
+        NoDataComponent
+    ],
+    templateUrl: './vegetation-indices.component.html',
+    styleUrl: './vegetation-indices.component.css'
 })
 export class VegetationIndicesComponent {
 

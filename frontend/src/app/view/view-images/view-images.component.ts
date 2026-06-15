@@ -28,33 +28,31 @@ import {MatCard} from "@angular/material/card";
 import {SiteData} from "../../data/site-data";
 
 @Component({
-  selector: 'app-view-images',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    FormsModule,
-    IgxCarouselModule,
-    IgxButtonModule,
-    IgxCardModule,
-    NgForOf,
-    MatButton,
-    LoaderComponent,
-    NgIf,
-    NoDataComponent,
-    ReactiveFormsModule,
-    MapComponent,
-    MatCard,
-    MatCalendar,
-    MatDatepickerInput,
-    MatDatepickerToggle,
-    MatDatepicker
-
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './view-images.component.html',
-  styleUrl: './view-images.component.css'
+    selector: 'app-view-images',
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        FormsModule,
+        IgxCarouselModule,
+        IgxButtonModule,
+        IgxCardModule,
+        NgForOf,
+        MatButton,
+        LoaderComponent,
+        NgIf,
+        NoDataComponent,
+        ReactiveFormsModule,
+        MapComponent,
+        MatCard,
+        MatCalendar,
+        MatDatepickerInput,
+        MatDatepickerToggle,
+        MatDatepicker
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './view-images.component.html',
+    styleUrl: './view-images.component.css'
 })
 export class ViewImagesComponent implements OnInit{
   @ViewChild('carousel', { static: true }) public carousel!: IgxCarouselComponent;

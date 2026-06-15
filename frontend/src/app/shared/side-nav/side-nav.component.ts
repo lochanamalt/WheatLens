@@ -9,25 +9,24 @@ import {NgClass, NgIf} from "@angular/common";
 import {BreakpointObserver} from "@angular/cdk/layout";
 
 @Component({
-  selector: 'app-side-nav',
-  standalone: true,
-  imports: [
-    MatSidenav,
-    MatSidenavContainer,
-    MatSidenavContent,
-    MatNavList,
-    RouterLink,
-    MatListItem,
-    MatToolbar,
-    MatIconButton,
-    MatIcon,
-    RouterOutlet,
-    RouterLinkActive,
-    NgClass,
-    NgIf
-  ],
-  templateUrl: './side-nav.component.html',
-  styleUrl: './side-nav.component.css'
+    selector: 'app-side-nav',
+    imports: [
+        MatSidenav,
+        MatSidenavContainer,
+        MatSidenavContent,
+        MatNavList,
+        RouterLink,
+        MatListItem,
+        MatToolbar,
+        MatIconButton,
+        MatIcon,
+        RouterOutlet,
+        RouterLinkActive,
+        NgClass,
+        NgIf
+    ],
+    templateUrl: './side-nav.component.html',
+    styleUrl: './side-nav.component.css'
 })
 export class SideNavComponent {
   @ViewChild(MatSidenav)
