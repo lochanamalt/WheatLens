@@ -31,8 +31,8 @@ The platform separates data ingestion, backend querying, and client-side visuali
          ▼                                            ▼
 [ Python Backend ] ───────────────────────────────────────────────┐
          │                                                        │
-         │ (Parses InfluxDB timeseries data, streams images from File Share) │
-         ▼                                                        │
+         │ (Parses InfluxDB timeseries data, streams images       │
+         ▼                                    from File Share)    │
 [ Angular Web Client ] <──────────────────────────────────────────┘
   ├── Custom Graphs (ApexCharts for VIs & Canopy Temp)
   ├── Daily Raw Imagery (RGB, NoIR, Thermal)
