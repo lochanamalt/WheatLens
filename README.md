@@ -1,7 +1,18 @@
 # WheatLens: Real Time Crop Monitoring Dashboard for Wheat
 
+![License](https://img.shields.io/badge/License-CC_BY--NC_4.0-blue.svg)
+![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen.svg)
+[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://python.org)
+[![Platform](https://img.shields.io/badge/Frontend-Angular-red.svg)](https://raspberrypi.org)
+![Research](https://img.shields.io/badge/Research-WSU--Phenomics-navy.svg)
+
+
 WheatLens is an web application designed to track and visualize crop development
-over time. The platform integrates data from field imaging sensors—specifically Raspberry Pi RGB and NoIR camera and 
+over time.
+
+Visit WheatLens here: [wheat-lens.azurewebsites.net](https://wheat-lens.azurewebsites.net/)
+
+The platform integrates data from field imaging sensors—specifically Raspberry Pi RGB and NoIR camera and 
 thermal camera data to monitor plot-level canopy temperature dynamics, and Vegetation Indices (VIs).
 
 ---
