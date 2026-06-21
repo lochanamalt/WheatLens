@@ -1,6 +1,6 @@
 # WheatLens: Real Time Crop Monitoring Dashboard for Wheat
 
-![License](https://img.shields.io/badge/License-CC_BY--NC_4.0-blue.svg)
+[![License](https://img.shields.io/badge/License-CC_BY--NC_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc/4.0/legalcode)
 ![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen.svg)
 [![Python](https://img.shields.io/badge/Backend-Python_3.12+-navy.svg)](https://python.org)
 [![Platform](https://img.shields.io/badge/Frontend-Angular_CLI_20.3.25-red.svg)](https://github.com/angular/angular-cli)
