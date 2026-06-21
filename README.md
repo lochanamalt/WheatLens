@@ -6,7 +6,7 @@ thermal camera data to monitor plot-level canopy temperature dynamics, and Veget
 
 ---
 
-## 🚀 Key System Features
+## Key System Features
 
 * **Multi-Line Interactive VI Graphs:** Time-series line charts tracking canopy temperature and VIs.
 Interactive legend isolates a specific plot's lifecycle with a single click.
@@ -17,7 +17,7 @@ NDVI is then mapped by calculating the spectral reflectance data extracted from 
 
 ---
 
-## 🛠️ System Architecture & Data Flow
+## System Architecture & Data Flow
 
 The platform separates data ingestion, backend querying, and client-side visualization layers to optimize performance when handling dense historical seasonal datasets:
 
@@ -42,7 +42,7 @@ The platform separates data ingestion, backend querying, and client-side visuali
 
 ---
 
-## 📂 Repository File Structure
+## Repository File Structure
 
 ```text
 │                         # Source code deployed in Azure Web App
@@ -71,7 +71,7 @@ The platform separates data ingestion, backend querying, and client-side visuali
 
 ---
 
-## ⚙️ Configuration & Installation
+## Configuration & Installation
 
 ### Azure Web App Deployment
 
@@ -133,7 +133,7 @@ ng build --configuration production
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0). 
 
