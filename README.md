@@ -2,10 +2,9 @@
 
 ![License](https://img.shields.io/badge/License-CC_BY--NC_4.0-blue.svg)
 ![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen.svg)
-[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://python.org)
-[![Platform](https://img.shields.io/badge/Frontend-Angular-red.svg)](https://raspberrypi.org)
-![Research](https://img.shields.io/badge/Research-WSU--Phenomics-navy.svg)
-
+[![Python](https://img.shields.io/badge/Backend-Python_3.12+-navy.svg)](https://python.org)
+[![Platform](https://img.shields.io/badge/Frontend-Angular_CLI_20.3.25-red.svg)](https://github.com/angular/angular-cli)
+![Research](https://img.shields.io/badge/Research-WSU--Phenomics-yellow.svg)
 
 WheatLens is an web application designed to track and visualize crop development
 over time.
